@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
 import { toast } from 'sonner';
 import { 
   Mail, Lock, Eye, EyeOff, ArrowLeft, Wallet, Loader2, KeyRound, Check, ShieldCheck 
@@ -15,12 +14,11 @@ const ForgotPassword: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  // Form States
+
   const [email, setEmail] = useState('');
-  const [otp, setOtp] = useState(['', '', '', '']); // 4-digit OTP matching backend
+  const [otp, setOtp] = useState(['', '', '', '']); 
   const [newPassword, setNewPassword] = useState('');
 
-  // ------------------- STEP 1: REQUEST OTP -------------------
   const handleRequestOtp = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -43,7 +41,7 @@ const ForgotPassword: React.FC = () => {
     }
   };
 
-  // ------------------- STEP 2: VERIFY OTP & RESET PASSWORD -------------------
+ 
   const handleResetPassword = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -79,7 +77,6 @@ const ForgotPassword: React.FC = () => {
     }
   };
 
-  // Handle OTP inputs focus shift
   const handleOtpChange = (index: number, value: string) => {
     if (value.length > 1) return;
     const updatedOtp = [...otp];

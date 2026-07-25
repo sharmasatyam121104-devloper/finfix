@@ -15,7 +15,6 @@ const Signup: React.FC = () => {
 
   const naviage = useNavigate()
 
-  // Form State (Backend expects: fullname, email, password & 4-digit OTP)
   const [formData, setFormData] = useState({
     fullname: '',
     email: '',
@@ -23,7 +22,6 @@ const Signup: React.FC = () => {
     otp: ['', '', '', ''], 
   });
 
-  // STEP 1: Calling POST /signup API
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -42,7 +40,7 @@ const Signup: React.FC = () => {
       });
 
       toast.success(data.message || 'Signup successful');
-      setStep('otp'); // Switch to OTP View
+      setStep('otp'); 
     } 
     catch (err) {
       return clientCatchError(err);
@@ -80,7 +78,6 @@ const Signup: React.FC = () => {
     updatedOtp[index] = value;
     setFormData({ ...formData, otp: updatedOtp });
 
-    // Auto-focus next field
     if (value && index < 3) {
       const nextInput = document.getElementById(`otp-input-${index + 1}`);
       nextInput?.focus();
@@ -90,11 +87,9 @@ const Signup: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#E6F4F1] text-[#0F3842] font-sans flex flex-col justify-between p-4">
       
-      {/* CENTER CARD CONTAINER */}
       <div className="w-full max-w-md mx-auto my-auto py-8">
         <div className="bg-white rounded-2xl shadow-xl border border-[#B2DFDB] p-8 space-y-6">
           
-          {/* LOGO & BRANDING */}
           <div className="text-center space-y-2">
             <div className="w-12 h-12 bg-[#0F4C5C] text-white rounded-xl mx-auto flex items-center justify-center font-black text-2xl shadow-md">
               <Wallet className="w-6 h-6" />
@@ -110,7 +105,6 @@ const Signup: React.FC = () => {
           </div>
 
 
-          {/* STEP 1: USER DETAILS */}
           {step === 'details' ? (
             <form onSubmit={handleSignup} className="space-y-4">
               
@@ -132,7 +126,6 @@ const Signup: React.FC = () => {
                 </div>
               </div>
 
-              {/* Email */}
               <div>
                 <label className="block text-xs font-bold text-[#0F3842] mb-1.5">
                   Email Address
@@ -150,7 +143,6 @@ const Signup: React.FC = () => {
                 </div>
               </div>
 
-              {/* Password */}
               <div>
                 <label className="block text-xs font-bold text-[#0F3842] mb-1.5">
                   Password
@@ -175,7 +167,6 @@ const Signup: React.FC = () => {
                 </div>
               </div>
 
-              {/* SUBMIT BUTTON */}
               <button
                 type="submit"
                 disabled={loading}
@@ -194,7 +185,6 @@ const Signup: React.FC = () => {
             </form>
           ) : (
             
-            /* STEP 2: OTP VERIFICATION */
             <form onSubmit={handleVerifyOtp} className="space-y-5">
               <div>
                 <label className="block text-xs font-bold text-[#0F3842] text-center mb-3">
@@ -245,7 +235,6 @@ const Signup: React.FC = () => {
             </form>
           )}
 
-          {/* FOOTER LINK */}
           <div className="pt-4 border-t border-[#B2DFDB]/60 text-center text-xs text-[#5C8088]">
             Already have a FinFix account?{' '}
             <Link to="/login" className="font-extrabold text-[#0F4C5C] hover:underline">
@@ -253,7 +242,6 @@ const Signup: React.FC = () => {
             </Link>
           </div>
 
-          {/* SECURITY BADGE */}
           <div className="flex items-center justify-center gap-1.5 text-[11px] text-[#5C8088] bg-[#E6F4F1] py-2 px-3 rounded-xl border border-[#B2DFDB]">
             <ShieldCheck className="w-4 h-4 text-[#0F4C5C] shrink-0" />
             <span>Encrypted JWT & Secure Password Hashing</span>
@@ -262,7 +250,6 @@ const Signup: React.FC = () => {
         </div>
       </div>
 
-      {/* PAGE FOOTER */}
       <footer className="text-center text-xs text-[#5C8088] pb-2">
         © 2026 FinFix Tracker System. All rights reserved.
       </footer>
