@@ -7,12 +7,14 @@ import {
 import { toast } from 'sonner';
 import api from '../utils/api';
 import clientCatchError from '../utils/clientCatchError';
+import { useAuthStore } from '../zustand/useAuthStore';
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
   
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+   const setUser = useAuthStore((state) => state.setUser);
 
   const [formData, setFormData] = useState({
     email: '',
@@ -34,7 +36,7 @@ const Login: React.FC = () => {
         email: formData.email,
         password: formData.password
       });
-
+      setUser(data.data);
       toast.success(data.message || 'Login successful! Redirecting...');
       navigate('/dashboard');
     } 

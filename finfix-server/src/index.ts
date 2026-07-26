@@ -6,7 +6,6 @@ connectDB();
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import path from "path";
 
 const app = express();
 
@@ -21,7 +20,10 @@ app.use(cors({
 
 
 import UserRouter from "./modules/user/user.routes";
+import ExpenseRouter from "./modules/expense/expense.routes";
+
 app.use('/user', UserRouter)
+app.use('/expense', ExpenseRouter)
 
 app.get("/", (_req, res) => {
   res.json({

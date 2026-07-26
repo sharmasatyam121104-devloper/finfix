@@ -7,6 +7,7 @@ import jwt from "jsonwebtoken"
 import { SessionInterface } from "./user.interface";
 import { sendMail } from "../../utils/mail.utils";
 import { forgotPasswordTemplate, verifyAccountTemplate } from "../../templates/email.template";
+import { profile } from "console";
 
 export const signup = async(req: Request, res: Response)=>{
     try {
@@ -137,7 +138,15 @@ export const login = async(req: Request, res: Response)=>{
         user.lastLogin = new Date();
         await user.save();
 
-        return res.status(200).json({message: "User logged in successfully"})
+        const userPayload = {
+            id: user.id,
+            fullname: user.fullname,
+            email: user.email,
+            lastLogin: user.lastLogin,
+            profileImage: user.profileImage
+        }
+
+        return res.status(200).json({message: "User logged in successfully", data: userPayload})
     } 
     catch (error) {
         if(error instanceof Error){
@@ -155,9 +164,10 @@ export const upload_profile_picture = async(req: SessionInterface, res: Response
             return res.status(400).json({message: "User does not exist"})
         }
 
-        user.profilePicture = imgUrl;
+        user.profileImage = imgUrl;
         await user.save();
-        return res.status(200).json({message: "Profile picture uploaded successfully",imageUrl: user.profilePicture})
+        console.log(user);
+        return res.status(200).json({message: "Profile picture uploaded successfully",imageUrl: user.profileImage})
     } 
     catch (error) {
         if(error instanceof Error){
