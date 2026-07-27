@@ -1,4 +1,4 @@
-import transporter from "../config/mail.config";
+import "dotenv/config";
 
 interface SendMailOptions {
   to: string;
@@ -11,25 +11,30 @@ export const sendMail = async ({
   subject,
   html,
 }: SendMailOptions) => {
-  try {
-    const result = await transporter.sendMail({
-      from: process.env.MAIL_FROM,
-      to,
+  const response = await fetch("https://api.brevo.com/v3/smtp/email", {
+    method: "POST",
+    headers: {
+      "api-key": process.env.BREVO_API_KEY!,
+      "Content-Type": "application/json",
+      accept: "application/json",
+    },
+    body: JSON.stringify({
+      sender: {
+        name: "DevSync", // Apne app ka naam
+        email: process.env.BREVO_EMAIL!, // Verified sender email
+      },
+      to: [{ email: to }],
       subject,
-      html,
-    });
+      htmlContent: html,
+    }),
+  });
 
-    console.log("Mail sent:", result.messageId);
+  const data = await response.json();
 
-    return result;
-  } catch (error) {
-    console.error("Send Mail Error:", error);
-
-    if (error instanceof Error) {
-      console.error("Message:", error.message);
-      console.error("Stack:", error.stack);
-    }
-
-    throw error; // controller me error handle hoga
+  if (!response.ok) {
+    console.error("Brevo Error:", data);
+    throw new Error(data.message || "Failed to send email");
   }
+
+  return data;
 };
