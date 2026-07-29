@@ -240,7 +240,7 @@ export const forgotPassword = async(req: Request, res: Response)=>{
             html: forgotPasswordTemplate(otp),
         });
 
-        return res.json({message: "Please check your email for verification code.", otp})
+        return res.json({message: "Please check your email for verification code."})
     } 
     catch (error) {
         if(error instanceof Error){

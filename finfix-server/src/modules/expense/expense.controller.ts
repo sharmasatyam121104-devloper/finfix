@@ -145,8 +145,6 @@ export const updateExpense = async (req: SessionInterface, res: Response) => {
             });
         }
 
-        console.log(req.body);
-
         const transaction = await TransactionModel.findOneAndUpdate(
             {
             _id: id,
@@ -164,8 +162,6 @@ export const updateExpense = async (req: SessionInterface, res: Response) => {
             message: "Transaction not found.",
             });
         }
-
-        console.log(transaction);
 
         return res.status(200).json({
             message: "Transaction updated successfully.",
@@ -223,14 +219,19 @@ export const getExpenseStats = async (req: SessionInterface, res: Response) => {
         const userId = req.user?.id;
 
         const stats = await TransactionModel.aggregate([
-        {
+          {
+            $match: {
+              userId: new mongoose.Types.ObjectId(userId),
+            },
+          },
+          {
             $group: {
-            _id: "$type",
-            total: {
+              _id: "$type",
+              total: {
                 $sum: "$amount",
+              },
             },
-            },
-        },
+          },
         ]);
 
 
@@ -267,7 +268,6 @@ export const getAnalytics = async (
   res: Response
 ) => {
   try {
-    console.log("hit");
     const userId = req.user?.id;
 
     if (!userId) {
